@@ -44,21 +44,30 @@ data = response.json()
 # Normalize and deduplicate data
 owners = {}
 repos = []
-for item in data:
-    owner = item['owner']
-    owner_id = owner['id']
+for repo in data:
+    owner = repo["owner"]
+    owner_id = owner["id"]
+    owner_name = owner["login"]
+    owner_email = owner.get("email")
     if owner_id not in owners:
-        owners[owner_id] = {
-            'name': owner['login'],
-            'email': owner.get('email', '')
-        }
-    repo = {
-        'owner_id': owner_id,
-        'name': item['name'],
-        'status': item['private'] and 'private' or 'public',
-        'stars_count': item['stargazers_count']
-    }
-    repos.append(repo)
+        owners[owner_id] = {"name": owner_name, "email": owner_email}
+    repo_id = repo["id"]
+    repo_name = repo["name"]
+    status = "Public" if repo["private"] is False else "Private"
+    stars = repo["stargazers_count"]
+    cur.execute("SELECT * FROM repo WHERE id = %s", (repo_id,))
+    existing_repo = cur.fetchone()
+    if existing_repo is None:
+        owners_data = owners[owner_id]
+        cur.execute("INSERT INTO owner (name, email) VALUES (%s, %s) RETURNING id", (owners_data["name"], owners_data["email"]))
+        owner_id = cur.fetchone()[0]
+        repos.append({
+            "id": repo_id,
+            "owner_id": owner_id,
+            "name": repo_name,
+            "status": status,
+            "stars_count": stars
+        })
 
 # Insert data into tables
 for owner_id, owner in owners.items():
@@ -69,7 +78,7 @@ for owner_id, owner in owners.items():
     ''', (owner['name'], owner['email']))
     owner_row = cur.fetchone()
     if owner_row:
-        owner_id = owner_row[0]
+        owner_id == owner_row[0]
     for repo in repos:
         if repo['owner_id'] == owner_id:
             cur.execute('''
