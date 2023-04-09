@@ -1,9 +1,15 @@
+import os
 import requests
+from requests_oauthlib import OAuth2Session
+from oauthlib.oauth2 import BackendApplicationClient
 import psycopg2
 
-# Define the GitHub OAuth access token and API endpoint
-# Change the token values in respective to your account 
-access_token = "your_github_oauth_access_token"
+# Define the GitHub OAuth application information
+client_id = "your_github_client_id"
+client_secret = "your_github_client_secret"
+redirect_uri = "http://localhost:8000/callback"
+
+# Define the GitHub API endpoint
 api_url = "https://api.github.com/user/repos"
 
 # Define the PostgreSQL connection information
@@ -19,9 +25,17 @@ conn = psycopg2.connect(database=dbname, user=user, password=password, host=host
 # Open a cursor to perform database operations
 cur = conn.cursor()
 
+# Define the OAuth2Session object with the BackendApplicationClient
+client = BackendApplicationClient(client_id=client_id)
+oauth = OAuth2Session(client=client)
+
+# Use the OAuth2Session object to fetch an access token
+token_url = "https://github.com/login/oauth/access_token"
+token = oauth.fetch_token(token_url=token_url, client_id=client_id, client_secret=client_secret)
+
 # Set up the headers for the GitHub API request
 headers = {
-    "Authorization": f"Bearer {access_token}",
+    "Authorization": f"Bearer {token['access_token']}",
     "Accept": "application/vnd.github.v3+json"
 }
 
