@@ -5,7 +5,7 @@ import csv
 import os
 
 # Connect to the PostgreSQL database
-conn = psycopg2.connect(database="your_database_name", user="your_username", password="your_password", host="your_host", port="your_port")
+conn = psycopg2.connect(database="AbhinavChebrolu", user="AbhinavChebrolu", password="54321", host="localhost://", port="5432")
 
 # Open a cursor to perform database operations
 cur = conn.cursor()
