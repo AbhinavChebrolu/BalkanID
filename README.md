@@ -1,7 +1,7 @@
 # BalkanID
 
 Requirements
-certifi==2019.11.28\n
+certifi==2019.11.28--
 chardet==3.0.4
 defusedxml==0.6.0
 Django==2.2.7
