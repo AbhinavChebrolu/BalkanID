@@ -33,30 +33,42 @@ if response.status_code == 200:
     # Parse the response JSON data to extract the repository information
     repositories = response.json()
 
+    # Define a set to store the unique owner IDs
+    owner_ids = set()
+
     # Loop through each repository and insert it into the PostgreSQL database
     for repo in repositories:
-        try:
-            cur.execute(
-                "INSERT INTO repositories (owner_id, owner_name, owner_email, repo_id, repo_name, status, stars_count) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                (repo["owner"]["id"], repo["owner"]["login"], repo["owner"].get("email"), repo["id"], repo["name"], repo["private"], repo["stargazers_count"])
-            )
-            conn.commit()
-        except psycopg2.IntegrityError:
-            # If the repository is already in the database, print a message and continue
-            print(f"Repository '{repo['name']}' already exists in the database.")
-            conn.rollback()
-        except Exception as e:
-            # If an exception occurs, print the error message and rollback the transaction
-            print(f"Error inserting repository '{repo['name']}' into the database: {e}")
-            conn.rollback()
+        owner_id = repo["owner"]["id"]
+        owner_name = repo["owner"]["login"]
+        owner_email = repo["owner"].get("email")
+        repo_id = repo["id"]
+        repo_name = repo["name"]
+        status = "private" if repo["private"] else "public"
+        stars_count = repo["stargazers_count"]
 
-    # Close the cursor and database connection
+        # Normalize the owner information and insert it into the owners table
+        if owner_id not in owner_ids:
+            owner_ids.add(owner_id)
+            cur.execute(
+                "INSERT INTO owners (id, name, email) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
+                (owner_id, owner_name, owner_email)
+            )
+
+        # Insert the repository information into the repositories table
+        cur.execute(
+            "INSERT INTO repositories (owner_id, repo_id, name, status, stars) VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+            (owner_id, repo_id, repo_name, status, stars_count)
+        )
+
+    # Commit the transaction and close the cursor and database connection
+    conn.commit()
     cur.close()
     conn.close()
 
     print(f"Successfully inserted {len(repositories)} repositories into the database.")
 else:
     print("Error retrieving repositories from GitHub API.")
+
 
 #In this code, you would need to replace the dummy values for the GitHub OAuth access token and the PostgreSQL connection 
 #information with the real values for your setup. The code makes a GitHub API request to retrieve the user's repositories, 
