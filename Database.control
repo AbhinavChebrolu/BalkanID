@@ -17,9 +17,20 @@ VALUES
   ('johndoe', 'johndoe@github.com', 'MyCoolProject', 'public', 9012);
 
 -- For updating the table
+-- Update the stars count for repo with ID 101
 UPDATE repositories
-SET status = 'public', stars_count = 5678
-WHERE repo_id = 1;
+SET stars_count = 15
+WHERE repo_id = 101;
+
+-- Add a new repository
+INSERT INTO repositories (owner_id, owner_name, owner_email, repo_id, repo_name, status, stars_count)
+VALUES
+    (1, 'John Doe', 'john.doe@example.com', 104, 'my-repo-4', 'public', 8);
+
+-- Update the status of repo with ID 102
+UPDATE repositories
+SET status = 'public'
+WHERE repo_id = 102;
 
 --To print the table
 SELECT *
