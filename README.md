@@ -18,4 +18,7 @@ social-auth-core==3.2.0
 sqlparse==0.3.0
 urllib3==1.25.7
 
+![image](https://user-images.githubusercontent.com/78219591/230788387-38ca5863-a072-49e6-bbc8-75f37244be67.png)
+
+
 ![image](https://user-images.githubusercontent.com/78219591/230787208-89e58c54-4bdf-477f-90b0-30dda9b66f6f.png)
