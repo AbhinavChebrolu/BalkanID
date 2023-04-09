@@ -1,0 +1,29 @@
+COPY Table_Name TO 'Path/filename.csv' CSV HEADER;
+
+-- Create table to store repository information
+CREATE TABLE repositories (
+  owner_id SERIAL PRIMARY KEY,
+  owner_name VARCHAR(255) NOT NULL,
+  owner_email VARCHAR(255),
+  repo_id SERIAL NOT NULL,
+  repo_name VARCHAR(255) NOT NULL,
+  status VARCHAR(10) NOT NULL,
+  stars_count INTEGER
+);
+
+-- Insert some sample data
+INSERT INTO repositories (owner_name, owner_email, repo_name, status, stars_count)
+VALUES
+  ('octocat', 'octocat@github.com', 'Hello-World', 'public', 1234),
+  ('codemonkey', NULL, 'MyPrivateRepo', 'private', 5678),
+  ('johndoe', 'johndoe@github.com', 'MyCoolProject', 'public', 9012);
+
+-- For updating the table
+UPDATE repositories
+SET status = 'public', stars_count = 5678
+WHERE repo_id = 1;
+
+--To print the table
+SELECT *
+FROM repositories;
+
