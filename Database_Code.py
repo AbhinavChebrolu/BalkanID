@@ -73,7 +73,7 @@ for repo in data:
 for owner_id, owner in owners.items():
     cur.execute('''
         INSERT INTO owner (name, email) VALUES (%s, %s)
-        ON CONFLICT DO NOTHING
+        ON CONFLICT (id) DO UPDATE SET name=EXCLUDED.name, email=EXCLUDED.email
         RETURNING id;
     ''', (owner['name'], owner['email']))
     owner_row = cur.fetchone()
@@ -84,7 +84,7 @@ for owner_id, owner in owners.items():
             cur.execute('''
                 INSERT INTO repo (owner_id, name, status, stars_count)
                 VALUES (%s, %s, %s, %s)
-                ON CONFLICT DO NOTHING;
+                ON CONFLICT (id) DO UPDATE SET owner_id=EXCLUDED.owner_id, name=EXCLUDED.name, status=EXCLUDED.status, stars_count=EXCLUDED.stars_count;
             ''', (owner_id, repo['name'], repo['status'], repo['stars_count']))
 
 # Commit changes and close connection
