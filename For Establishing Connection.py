@@ -64,9 +64,7 @@ for repo in repos:
 # Insert the normalized data into the 'repositories' table
 for repo in repos_normalized:
     cur.execute("""
-        INSERT INTO repositories (owner_id, owner_name, owner_email, repo_id, repo_name, status, stars_count)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-    """, repo)
+        INSERT INTO repositories (owner_id, owner_name, owner_email, repo_id, repo_name, status, stars_count) VALUES (%s, %s, %s, %s, %s, %s, %s)""", repo)
 
 conn.commit()
 
