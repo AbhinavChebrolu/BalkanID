@@ -30,3 +30,8 @@ docker build -t my-app .
 
 #  This will build the Docker image and tag it with the name my-app.
 #  To run the Docker container, we can use the following command:
+
+docker run -p 8000:8000 my-app
+
+#  This will start the container and map port 8000 from the container to port 8000 on the host machine.
+#  Once the container is running, we can access the endpoint to download the CSV file by visiting http://localhost:8000/download. The CSV file will be downloaded to the local machine.
