@@ -57,3 +57,6 @@ if response.status_code == 200:
     print(f"Successfully inserted {len(repositories)} repositories into the database.")
 else:
     print("Error retrieving repositories from GitHub API.")
+
+#In this code, you would need to replace the dummy values for the GitHub OAuth access token and the PostgreSQL connection information with the real values for your setup. The code makes a GitHub API request to retrieve the user's repositories, loops through each repository and inserts it into the PostgreSQL database, detects duplicated values by catching the psycopg2.IntegrityError exception, and displays exceptions for any other errors that occur during the insertion. The code also closes the database connection and prints a message to confirm the number of repositories that were successfully inserted into the database.
+    
