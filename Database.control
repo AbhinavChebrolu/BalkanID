@@ -1,5 +1,3 @@
-COPY Table_Name TO 'Path/filename.csv' CSV HEADER;
-
 -- Create table to store repository information
 CREATE TABLE repositories (
   owner_id SERIAL PRIMARY KEY,
