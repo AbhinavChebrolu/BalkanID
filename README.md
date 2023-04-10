@@ -60,7 +60,7 @@ In order to test the purchase flows, fill in the account details in
 
 ## Walkthrough
 
-Before you interact with the application, go to GoCardless Sandbox and set up
+Before you interact with the application, go to balkanid Sandbox and set up
 the Redirect URI in the Developer settings. To make it work with this
 application, use the value `http://127.0.0.1:8000/balkanid/confirm/`. This is to
 make sure you are redirected back to your site where the purchase is verified
@@ -101,15 +101,15 @@ running on, which is 8000.
 (env)$ localtunnel-beta 8000
 => Port 8000 is now publicly accessible from http://5bebd69e5222.v2.localtunnel.com ...
 ```
-Please refer to the [the Webhooks manual](https://sandbox.gocardless.com/docs/python/merchant_tutorial_webhook#receiving-webhooks) for more details.
+Please refer to the [the Webhooks manual](https://sandbox.balkan.id/docs/python/merchant_tutorial_webhook#receiving-webhooks) for more details.
 
 ### Test your Webhooks
 Once you have the app running with `python manage.py runserver` and tunneling
 set up with `localtunnel` (make sure you verify that by navigating to the URL
 that `localtunnel` gives back to you) navigate to the "Web hooks" tab under the
-Developer section in GoCardless Sandbox. Make sure that the Webhook URL is the
-same you got back from `localtunnel` with an added `/gocardless/webhook/` at the
-end, i.e `http://5bebd69e5222.v2.localtunnel.com/gocardless/webhook/`,
+Developer section in balkanid Sandbox. Make sure that the Webhook URL is the
+same you got back from `localtunnel` with an added `/balkanid/webhook/` at the
+end, i.e `http://5bebd69e5222.v2.localtunnel.com/balkanid/webhook/`,
 otherwise it does not work.  There should be a button for sending a test
 webhook. Click that, select `Bill` as the object type and click `Fire webhook`.
 
